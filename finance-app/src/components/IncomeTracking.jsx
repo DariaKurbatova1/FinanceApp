@@ -77,7 +77,7 @@ function IncomeTracking() {
   }, []);
   useEffect(() => {
     fetchIncomes(); 
-  }, [selectedDate]);
+  }, [fetchIncomes, selectedDate]);
 
   const month = selectedDate.toLocaleString('default', { month: 'long' });
   const year = selectedDate.getFullYear();
