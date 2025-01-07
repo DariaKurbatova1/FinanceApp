@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import cors from 'cors'; 
+import Expense from './models/Expense.js'; 
 
 dotenv.config();
 
@@ -67,6 +68,54 @@ app.post('/login', async (req, res) => {
 
   res.json({ token });
 });
+
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(403).json({ message: 'Access denied' });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: 'Access denied' });
+    req.user = user;
+    next();
+  });
+};
+//route to get expenses for user
+app.get('/api/expenses', verifyToken, async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    const expenses = await Expense.find({
+      userId: req.user.userId,
+      date: {
+        $gte: new Date(year, month - 1, 1),
+        $lt: new Date(year, month, 1),
+      },
+    });
+
+    res.json(expenses);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+});
+
+//route to add expense
+app.post('/api/expenses', verifyToken, async (req, res) => {
+  try {
+    const { description, amount, date } = req.body;
+
+    const newExpense = new Expense({
+      userId: req.user.userId,
+      description,
+      amount,
+      date: new Date(date),
+    });
+
+    await newExpense.save();
+    res.json(newExpense);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+});
+
 
 //start server
 app.listen(5001, () => {
