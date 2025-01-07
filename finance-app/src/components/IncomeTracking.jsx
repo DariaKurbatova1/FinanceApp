@@ -46,6 +46,18 @@ function IncomeTracking() {
       setSelectedSource("");
     }
   };
+  const deleteIncome = async (incomeId) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`http://localhost:5001/api/incomes/${incomeId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      fetchIncomes();
+    }
+  };
   useEffect(() => {
     fetchIncomes(); 
   }, [selectedDate]);
@@ -90,6 +102,7 @@ function IncomeTracking() {
             {incomes.map((income, index) => (
               <li key={index}>
                 Source: {income.source}, Amount: ${income.amount}, Date: {new Date(income.date).toLocaleDateString()}
+                <button onClick={() => deleteIncome(income._id)}>Delete</button>
               </li>
             ))}
           </ul>

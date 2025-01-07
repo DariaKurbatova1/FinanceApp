@@ -181,6 +181,20 @@ app.get('/api/incomes', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err });
   }
 });
+//delete income route
+app.delete('/api/incomes/:id', async (req, res) => {
+  try {
+    const incomeId = req.params.id;
+    const result = await Income.deleteOne({ _id: incomeId });
+    if (result.deletedCount > 0) {
+      res.status(200).send({ message: 'Income deleted successfully' });
+    } else {
+      res.status(404).send({ message: 'Income not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error deleting income', error });
+  }
+});
 //start server
 app.listen(5001, () => {
   console.log('Server is running on port 5001');
