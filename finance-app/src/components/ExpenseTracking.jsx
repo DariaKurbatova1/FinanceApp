@@ -8,6 +8,8 @@ function ExpenseTracking() {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [isAddingExpense, setIsAddingExpense] = useState(false);
+  const [category, setCategory] = useState('');
+
 
 
   const handleDateChange = (newDate) => {
@@ -61,6 +63,7 @@ function ExpenseTracking() {
       setExpenses([...expenses, data]);
       setDescription('');
       setAmount('');
+      setCategory('');
       setIsAddingExpense(false);
     } else {
       setError(data.message || 'Error adding expense');
@@ -98,6 +101,19 @@ function ExpenseTracking() {
             onChange={(e) => setAmount(e.target.value)}
             required
           />
+          <label htmlFor="category">Category:</label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="">Select a category</option>
+            <option value="food">Food</option>
+            <option value="transportation">Transportation</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="shopping">Shopping</option>
+          </select>
           <button type="submit">Add Expense</button>
           <button type="button" onClick={() => setIsAddingExpense(false)}>Cancel</button>
         </form>
@@ -108,7 +124,7 @@ function ExpenseTracking() {
         <ul>
           {expenses.map((expense) => (
             <li key={expense._id}>
-              {expense.description}: ${expense.amount} on {new Date(expense.date).toLocaleDateString()}
+              {expense.description}: ${expense.amount} on {new Date(expense.date).toLocaleDateString() } (Category: {expense.category})
             </li>
           ))}
         </ul>

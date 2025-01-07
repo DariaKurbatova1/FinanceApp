@@ -100,12 +100,17 @@ app.get('/api/expenses', verifyToken, async (req, res) => {
 //route to add expense
 app.post('/api/expenses', verifyToken, async (req, res) => {
   try {
-    const { description, amount, date } = req.body;
+    const { description, amount, category, date } = req.body;
+
+    if (!['food', 'transportation', 'entertainment', 'shopping'].includes(category)) {
+      return res.status(400).json({ message: 'Invalid category' });
+    }
 
     const newExpense = new Expense({
       userId: req.user.userId,
       description,
       amount,
+      category,
       date: new Date(date),
     });
 
