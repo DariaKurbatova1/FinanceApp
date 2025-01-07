@@ -42,12 +42,32 @@ function ExpenseTracking() {
     fetchExpenses();
   }, [date, year]);
 
+  const handleDeleteExpense = async (expenseId) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const response = await fetch(`http://localhost:5001/api/expenses/${expenseId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      setExpenses(expenses.filter(expense => expense._id !== expenseId));
+    } else {
+      setError('Error deleting expense');
+    }
+  };
+
+
   const handleAddExpense = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    const expenseData = { description, amount, date: date.toISOString() };
+    const expenseData = { description, amount, category, date: date.toISOString() };
 
     const response = await fetch('http://localhost:5001/api/expenses', {
       method: 'POST',
@@ -125,6 +145,7 @@ function ExpenseTracking() {
           {expenses.map((expense) => (
             <li key={expense._id}>
               {expense.description}: ${expense.amount} on {new Date(expense.date).toLocaleDateString() } (Category: {expense.category})
+              <button onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
             </li>
           ))}
         </ul>
