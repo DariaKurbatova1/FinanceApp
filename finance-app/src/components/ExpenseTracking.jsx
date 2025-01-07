@@ -2,7 +2,7 @@ function ExpenseTracking() {
     return (
       <div>
         <h1>Expense Tracking</h1>
-        <p>Track your expenses here.</p>
+        <p>Track your expenses here</p>
       </div>
     );
   }
