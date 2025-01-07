@@ -163,6 +163,50 @@ app.get('/api/income-sources', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err });
   }
 });
+
+//add income route 
+app.post('/api/incomes', verifyToken, async (req, res) => {
+  try {
+    const { source, amount, date } = req.body;
+
+    if (!source || !amount) {
+      return res.status(400).json({ message: 'Source and amount are required.' });
+    }
+
+    const newIncome = new Income({
+      userId: req.user.userId,
+      source,
+      amount,
+      date: date ? new Date(date) : new Date(),
+    });
+
+    await newIncome.save();
+    res.status(201).json(newIncome);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+});
+//get incomes route
+app.get('/api/incomes', verifyToken, async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    const query = {
+      userId: req.user.userId,
+    };
+
+    if (month && year) {
+      query.date = {
+        $gte: new Date(year, month - 1, 1),
+        $lt: new Date(year, month, 1),
+      };
+    }
+
+    const incomes = await Income.find(query);
+    res.json(incomes);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+});
 //start server
 app.listen(5001, () => {
   console.log('Server is running on port 5001');
