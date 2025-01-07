@@ -141,14 +141,30 @@ function ExpenseTracking() {
         <button onClick={() => setIsAddingExpense(true)}>Add Expense</button>
       )}
 
-        <ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
           {expenses.map((expense) => (
-            <li key={expense._id}>
-              {expense.description}: ${expense.amount} on {new Date(expense.date).toLocaleDateString() } (Category: {expense.category})
-              <button onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
-            </li>
+            <tr key={expense._id}>
+              <td>{expense.description}</td>
+              <td>${expense.amount}</td>
+              <td>{new Date(expense.date).toLocaleDateString()}</td>
+              <td>{expense.category}</td>
+              <td>
+                <button onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
+              </td>
+            </tr>
           ))}
-        </ul>
+        </tbody>
+      </table>
       </div>
     );
   }
