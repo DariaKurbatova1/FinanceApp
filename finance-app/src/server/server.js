@@ -7,7 +7,6 @@ import cors from 'cors';
 import Expense from './models/Expense.js'; 
 import Income from "./models/Income.js";
 
-
 dotenv.config();
 
 const app = express();
@@ -134,31 +133,6 @@ app.delete('/api/expenses/:id', verifyToken, async (req, res) => {
 
     await Expense.deleteOne({ _id: id });
     res.json({ message: 'Expense deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err });
-  }
-});
-
-//add income source route
-app.post("/api/income-sources", verifyToken, async (req, res) => {
-  const { name } = req.body;
-  if (!name) return res.status(400).json({ message: "Name is required" });
-
-  const newIncomeSource = new Income({
-    userId: req.user.userId,
-    source: name, 
-    amount: 0,
-    date: new Date(),
-  });
-
-  await newIncomeSource.save();
-  res.status(201).json(newIncomeSource);
-});
-//get all income sources route
-app.get('/api/income-sources', verifyToken, async (req, res) => {
-  try {
-    const incomeSources = await Income.find({ userId: req.user.userId });
-    res.json(incomeSources);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err });
   }

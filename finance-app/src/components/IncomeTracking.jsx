@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 
 function IncomeTracking() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [incomeSources, setIncomeSources] = useState([]);
-  const [newSource, setNewSource] = useState("");
   const [selectedSource, setSelectedSource] = useState("");
   const [amount, setAmount] = useState("");
   const [incomes, setIncomes] = useState([]);
@@ -12,20 +10,10 @@ function IncomeTracking() {
     const [year, month] = e.target.value.split('-');
     setSelectedDate(new Date(year, month - 1));
   };
-  const fetchIncomeSources = async () => {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5001/api/income-sources", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setIncomeSources(data);
-  };
   const fetchIncomes = async () => {
     const token = localStorage.getItem("token");
-    const month = selectedDate.getMonth() + 1;  
-    const year = selectedDate.getFullYear();   
+    const month = selectedDate.getMonth() + 1;
+    const year = selectedDate.getFullYear();
     const response = await fetch(
       `http://localhost:5001/api/incomes?month=${month}&year=${year}`,
       {
@@ -37,21 +25,7 @@ function IncomeTracking() {
     const data = await response.json();
     setIncomes(data);
   };
-  const addIncomeSource = async () => {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5001/api/income-sources", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name: newSource }),
-    });
-    if (response.ok) {
-      fetchIncomeSources();
-      setNewSource("");
-    }
-  };
+
   const addIncome = async () => {
     const token = localStorage.getItem("token");
     const response = await fetch("http://localhost:5001/api/incomes", {
@@ -67,17 +41,14 @@ function IncomeTracking() {
       }),
     });
     if (response.ok) {
+      fetchIncomes();
       setAmount("");
       setSelectedSource("");
     }
   };
-
-  useEffect(() => {
-    fetchIncomeSources();
-  }, []);
   useEffect(() => {
     fetchIncomes(); 
-  }, [fetchIncomes, selectedDate]);
+  }, [selectedDate]);
 
   const month = selectedDate.toLocaleString('default', { month: 'long' });
   const year = selectedDate.getFullYear();
@@ -95,28 +66,13 @@ function IncomeTracking() {
 
         <p>Current Month: {month} {year}</p>
         <div>
-          <h2>Add Income Source</h2>
+          <h2>Add Income</h2>
           <input
             type="text"
-            value={newSource}
-            placeholder="Source Name"
-            onChange={(e) => setNewSource(e.target.value)}
-          />
-          <button onClick={addIncomeSource}>Add Source</button>
-        </div>
-        <div>
-          <h2>Add Income</h2>
-          <select
             value={selectedSource}
+            placeholder="Source Name"
             onChange={(e) => setSelectedSource(e.target.value)}
-          >
-            <option value="">Select Source</option>
-            {incomeSources.map((source, index) => (
-              <option key={index} value={source.source}>
-                {source.source}
-              </option>
-            ))}
-          </select>
+          />
           <input
             type="number"
             value={amount}
