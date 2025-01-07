@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
+import ExpenseChart from './ExpenseChart';
+
 import 'react-calendar/dist/Calendar.css';
 function ExpenseTracking() {
   const [date, setDate] = useState(new Date());
@@ -165,6 +167,7 @@ function ExpenseTracking() {
           ))}
         </tbody>
       </table>
+      <ExpenseChart expenses={expenses}/>
       </div>
     );
   }
