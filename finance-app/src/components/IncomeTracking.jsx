@@ -68,7 +68,6 @@ function IncomeTracking() {
     return (
       <div>
         <h1>Income Tracking</h1>
-        <p>Track your incomes here</p>
         <label htmlFor="month-select">Select Month: </label>
         <input
           type="month"
