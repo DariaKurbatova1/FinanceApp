@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 function Budgeting() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [incomes, setIncomes] = useState([]);
+  const [expenses, setExpenses] = useState([]);
 
   const handleMonthChange = (e) => {
     const [year, month] = e.target.value.split('-');
@@ -25,10 +26,26 @@ function Budgeting() {
     setIncomes(data);
   };
 
+  const fetchExpenses = async () => {
+    const token = localStorage.getItem('token');
+    const month = selectedDate.getMonth() + 1;
+    const year = selectedDate.getFullYear();
+    const response = await fetch(
+      `http://localhost:5001/api/expenses?month=${month}&year=${year}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    setExpenses(data);
+  };
   
 
   useEffect(() => {
     fetchIncomes();
+    fetchExpenses();
   }, [selectedDate]);
 
   const month = selectedDate.toLocaleString('default', { month: 'long' });
@@ -64,6 +81,28 @@ function Budgeting() {
               <td>{income.source}</td>
               <td>{income.amount}</td>
               <td>{new Date(income.date).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Expenses</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expenses.map((expense) => (
+            <tr key={expense._id}>
+              <td>{expense.description}</td>
+              <td>{expense.amount}</td>
+              <td>{expense.category}</td>
+              <td>{new Date(expense.date).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
