@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import BudgetChart from './BudgetChart';
+
 
 function Budgeting() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -52,6 +54,33 @@ function Budgeting() {
     const data = await response.json();
     setExpenses(data);
   };
+
+  const combinedData = [];
+  for (let i = 0; i < incomes.length; i++) {
+    combinedData.push({
+      ...incomes[i],
+      type: 'Income',
+      amount: incomes[i].amount,
+    });
+  }
+  for (let i = 0; i < expenses.length; i++) {
+    combinedData.push({
+      ...expenses[i],
+      type: 'Expense',
+      amount: -expenses[i].amount, 
+    });
+  }
+  combinedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+  let runningBalance = 0;
+  const chartData = [];
+  for (let i = 0; i < combinedData.length; i++) {
+    runningBalance += combinedData[i].amount;
+    chartData.push({
+      ...combinedData[i],
+      balance: runningBalance,
+    });
+  }
   
 
   useEffect(() => {
@@ -96,6 +125,9 @@ function Budgeting() {
           </tr>
         </tbody>
       </table>
+
+      <h2>Balance Chart</h2>
+      <BudgetChart data={chartData} />
 
       <h2>Income</h2>
       <table>
