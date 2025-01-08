@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import IncomeChart from './IncomeLineChart';
 
 function IncomeTracking() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -107,8 +108,9 @@ function IncomeTracking() {
             ))}
           </ul>
         </div>
+        <IncomeChart incomes={incomes} />
       </div>
-
+          
       </div>
     );
   }
