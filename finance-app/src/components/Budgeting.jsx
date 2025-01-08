@@ -9,6 +9,17 @@ function Budgeting() {
     const [year, month] = e.target.value.split('-');
     setSelectedDate(new Date(year, month - 1));
   };
+  const calculateTotal = (items, field) => {
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+      total += items[i][field];
+    }
+    return total;
+  };
+  
+  const totalIncome = calculateTotal(incomes, 'amount');
+  const totalExpenses = calculateTotal(expenses, 'amount');
+  const balance = totalIncome - totalExpenses;
 
   const fetchIncomes = async () => {
     const token = localStorage.getItem("token");
@@ -65,6 +76,26 @@ function Budgeting() {
       />
 
       <p>Current Month: {month} {year}</p>
+
+      <h2>Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Total Income</th>
+            <th>Total Expenses</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${totalIncome.toFixed(2)}</td>
+            <td>${totalExpenses.toFixed(2)}</td>
+            <td style={{ color: balance >= 0 ? 'green' : 'red' }}>
+              ${balance.toFixed(2)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>Income</h2>
       <table>
