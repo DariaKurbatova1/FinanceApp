@@ -1,4 +1,4 @@
-
+import './Header.css'
 function Header(){
   const handleLoginLogout = () => {
     const token = localStorage.getItem('token');
