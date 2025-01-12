@@ -7,6 +7,7 @@ import ExpenseTracking from './components/ExpenseTracking';
 import Budgeting from './components/Budgeting';
 import IncomeTracking from './components/IncomeTracking';
 import FinancialGoals from './components/FinancialGoals';
+import HomePage from './components/HomePage'
 function App() {
 
   return (
@@ -23,6 +24,7 @@ function App() {
       </header>
       <Header/>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/expenses" element={<ExpenseTracking />} />
         <Route path="/budgeting" element={<Budgeting />} />
@@ -30,6 +32,8 @@ function App() {
         <Route path="/goals" element={<FinancialGoals />} />
       </Routes>
       </Router>
+
+      
     </>
   )
 }
