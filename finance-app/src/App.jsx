@@ -1,6 +1,6 @@
 
 import './App.css'
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header'
 import LoginPage from './components/LoginPage';
 import ExpenseTracking from './components/ExpenseTracking';
@@ -13,9 +13,13 @@ function App() {
     <>
     <Router>
       <header>
-        <Link to="/">
-          <h1>Finance App</h1> 
-        </Link>
+      <a href="/" className="logo-link">
+        <img
+          src="./public/finance-app.png"
+          alt="Personal Finance Logo"
+          className="logo-img"
+        />
+      </a>
       </header>
       <Header/>
       <Routes>

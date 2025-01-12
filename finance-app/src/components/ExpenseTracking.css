@@ -1,0 +1,74 @@
+
+h1 {
+    color: #004d40;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+p {
+    color: #555;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+label {
+    font-size: 1rem;
+    color: #555;
+}
+input, select {
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+
+button {
+    background: #004d40;
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00352e;
+}
+
+.react-calendar {
+    margin: 2rem auto;
+    max-width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.react-calendar__tile {
+    padding: 1rem;
+    text-align: center;
+    background: #ffffff; 
+    color: #004d40; 
+    border-radius: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+}
+
+thead {
+    background: #004d40;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #ccc;
+}

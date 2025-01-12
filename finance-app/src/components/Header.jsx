@@ -12,8 +12,8 @@ function Header(){
   const isLoggedIn = localStorage.getItem('token');
 
   return (
-    <header>
-      <nav>
+    <header className="header">
+      <nav className="header__nav">
         <ul>
         <li><a href="#" onClick={handleLoginLogout}>{isLoggedIn ? 'Logout' : 'Login'}</a></li>
           <li><a href="/expenses">Expense Tracking</a></li>

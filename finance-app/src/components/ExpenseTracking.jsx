@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import ExpenseChart from './ExpenseChart';
+import './ExpenseTracking.css'
 
 import 'react-calendar/dist/Calendar.css';
 function ExpenseTracking() {

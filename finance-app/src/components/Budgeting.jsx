@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import BudgetChart from './BudgetChart';
-
+import './Budgeting.css'
 
 function Budgeting() {
   const [selectedDate, setSelectedDate] = useState(new Date());

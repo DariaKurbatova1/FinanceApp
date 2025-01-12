@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import IncomeChart from './IncomeLineChart';
+import './IncomeTracking.css'
 
 function IncomeTracking() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -66,7 +67,7 @@ function IncomeTracking() {
   const month = selectedDate.toLocaleString('default', { month: 'long' });
   const year = selectedDate.getFullYear();
     return (
-      <div>
+      <div className="container">
         <h1>Income Tracking</h1>
         <label htmlFor="month-select">Select Month: </label>
         <input
@@ -77,7 +78,7 @@ function IncomeTracking() {
         />
 
         <p>Current Month: {month} {year}</p>
-        <div>
+        <div className="add-income">
           <h2>Add Income</h2>
           <input
             type="text"
@@ -94,11 +95,11 @@ function IncomeTracking() {
           <button onClick={addIncome}>Add Income</button>
         </div>
 
-        <div>
+        <div className="income-list">
         <h2>Incomes for {month} {year}</h2>
         <div>
           <h3>All Incomes</h3>
-          <ul>
+          <ul className='incomes-ul'>
             {incomes.map((income, index) => (
               <li key={index}>
                 Source: {income.source}, Amount: ${income.amount}, Date: {new Date(income.date).toLocaleDateString()}
@@ -107,7 +108,9 @@ function IncomeTracking() {
             ))}
           </ul>
         </div>
-        <IncomeChart incomes={incomes} />
+        <div className="chart-container">
+          <IncomeChart incomes={incomes} />
+        </div>
       </div>
           
       </div>
