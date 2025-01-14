@@ -56,6 +56,11 @@ button:hover {
     border-radius: 4px;
 }
 
+.table-container {
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
