@@ -143,31 +143,32 @@ function ExpenseTracking() {
       ) : (
         <button onClick={() => setIsAddingExpense(true)}>Add Expense</button>
       )}
-
-      <table>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenses.map((expense) => (
-            <tr key={expense._id}>
-              <td>{expense.description}</td>
-              <td>${expense.amount}</td>
-              <td>{new Date(expense.date).toLocaleDateString()}</td>
-              <td>{expense.category}</td>
-              <td>
-                <button onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
-              </td>
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {expenses.map((expense) => (
+              <tr key={expense._id}>
+                <td>{expense.description}</td>
+                <td>${expense.amount}</td>
+                <td>{new Date(expense.date).toLocaleDateString()}</td>
+                <td>{expense.category}</td>
+                <td>
+                  <button onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <ExpenseChart expenses={expenses}/>
       </div>
     );

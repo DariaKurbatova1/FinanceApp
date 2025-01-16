@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import cors from 'cors'; 
 import Expense from './models/Expense.js'; 
 import Income from "./models/Income.js";
+import FinancialGoal from './models/FinancialGoal.js';
+
 
 dotenv.config();
 
@@ -195,6 +197,66 @@ app.delete('/api/incomes/:id', async (req, res) => {
     res.status(500).send({ message: 'Error deleting income', error });
   }
 });
+//add financial goal route
+app.post('/api/financial-goals', verifyToken, async (req, res) => {
+  try {
+    const { name, targetAmount, startDate, endDate } = req.body;
+
+    const newGoal = new FinancialGoal({
+      userId: req.user.userId,
+      name,
+      targetAmount,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    });
+
+    await newGoal.save();
+    res.status(201).json(newGoal);
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding financial goal', error: err });
+  }
+});
+//update goal route
+app.put('/api/financial-goals/:id', verifyToken, async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const goal = await FinancialGoal.findOne({ _id: req.params.id, userId: req.user.userId });
+
+    if (!goal) return res.status(404).json({ message: 'Goal not found' });
+
+    goal.progress += amount;
+    await goal.save();
+    res.json(goal);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating goal progress', error: err });
+  }
+});
+//get goals route
+app.get('/api/financial-goals', verifyToken, async (req, res) => {
+  try {
+    const goals = await FinancialGoal.find({ userId: req.user.userId });
+    res.json(goals);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching goals', error: err });
+  }
+});
+//delete goal route
+app.delete('/api/financial-goals/:id', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const goal = await FinancialGoal.findOne({ _id: id, userId: req.user.userId });
+
+    if (!goal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+
+    await FinancialGoal.deleteOne({ _id: id });
+    res.json({ message: 'Goal deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting goal', error: err });
+  }
+});
+
 //start server
 app.listen(5001, () => {
   console.log('Server is running on port 5001');

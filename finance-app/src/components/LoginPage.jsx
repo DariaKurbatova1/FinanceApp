@@ -6,9 +6,18 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
+  const [passwordError, setPasswordError] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!isLogin) {
+      const validationError = validatePassword(password);
+      if (validationError) {
+        setPasswordError(validationError);
+        return;
+      }
+    }
     const url = isLogin ? 'http://localhost:5001/login' : 'http://localhost:5001/register';
 
     try {
@@ -33,6 +42,17 @@ function LoginPage() {
     }
   };
 
+  const validatePassword = (password) => {
+    const minLength = 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength || !hasUpperCase || !hasSpecialChar) {
+      return 'Password must be at least 6 characters long, contain at least one uppercase letter, and at least one special character.';
+    }
+    return '';
+  };
+
   return (
     <div>
       <h1>{isLogin ? 'Login' : 'Create Account'}</h1>
@@ -53,9 +73,15 @@ function LoginPage() {
           id="password"
           name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            if (!isLogin) {
+              setPasswordError(validatePassword(e.target.value));
+            }
+          }}
           required
         />
+        {!isLogin && passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
 
         <button type="submit">{isLogin ? 'Login' : 'Create Account'}</button>
       </form>
