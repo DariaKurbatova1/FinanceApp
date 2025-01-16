@@ -16,6 +16,20 @@ function FinancialGoals() {
       setError('Failed to fetch goals.' + err);
     }
   };
+  const handleDeleteGoal = async (goalId) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/financial-goals/${goalId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+
+      if (!response.ok) throw new Error('Failed to delete goal');
+
+      setGoals(goals.filter((goal) => goal._id !== goalId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const handleAddGoal = async () => {
     try {
@@ -115,6 +129,7 @@ function FinancialGoals() {
                   if (e.key === 'Enter') handleUpdateProgress(goal._id, parseFloat(e.target.value));
                 }}
               />
+              <button onClick={() => handleDeleteGoal(goal._id)}>Delete Goal</button>
             </div>
           ))}
         </div>

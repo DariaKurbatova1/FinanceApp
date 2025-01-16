@@ -240,6 +240,22 @@ app.get('/api/financial-goals', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Error fetching goals', error: err });
   }
 });
+//delete goal route
+app.delete('/api/financial-goals/:id', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const goal = await FinancialGoal.findOne({ _id: id, userId: req.user.userId });
+
+    if (!goal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+
+    await FinancialGoal.deleteOne({ _id: id });
+    res.json({ message: 'Goal deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting goal', error: err });
+  }
+});
 
 //start server
 app.listen(5001, () => {
