@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev-client\" \"npm run dev-server\"",
+    "build": "vite build",
     "dev-client": "vite",
     "dev-server": "node src/server/server.js"
   },
