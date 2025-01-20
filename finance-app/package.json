@@ -8,8 +8,9 @@
     "build": "vite build",
     "dev-client": "vite",
     "dev-server": "node src/server/server.js",
+    "startserver": "concurrently \"npm run dev-client\" \"npm run dev-server\"",
     "start": "node src/server/server.js",
-    "dev": "nodemon src/server/server.js",
+    "dev": "nodem src/server/server.js",
     "prod": "NODE_ENV=production nodemon server.js"
     
   },
