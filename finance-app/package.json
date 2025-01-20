@@ -8,7 +8,7 @@
     "build": "vite build",
     "dev-client": "vite",
     "dev-server": "node src/server/server.js",
-    "start": "node server.js",
+    "start": "node src/server/server.js",
     "dev": "nodemon src/server/server.js",
     "prod": "NODE_ENV=production nodemon server.js"
     
