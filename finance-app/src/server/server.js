@@ -8,12 +8,22 @@ import Expense from './models/Expense.js';
 import Income from "./models/Income.js";
 import FinancialGoal from './models/FinancialGoal.js';
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+
 
 dotenv.config();
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "build")));
 //connect to db
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
